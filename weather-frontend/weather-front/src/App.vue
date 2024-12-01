@@ -1,21 +1,22 @@
 <template>
   <div id="app">
-    <HelloWorld />
+    <WeatherForecast />
   </div>
 </template>
 
 <script>
-// Import the HelloWorld component
-import HelloWorld from './components/HelloWorld.vue';
+import WeatherForecast from "./components/WeatherForecast.vue";
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
-  }
+    WeatherForecast,
+  },
 };
 </script>
 
-<style>
-/* Global styles */
+<style scoped>
+/* Make sure the background is not black by default */
+#app {
+  background-color: #fff; /* Set a default white background */
+}
 </style>
