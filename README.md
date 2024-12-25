@@ -23,3 +23,7 @@ Ensure the following tools are installed before starting:
 2. From the `weather-frontend/weather-front` directory, run:
    ```bash
    npm run dev
+
+
+## Run Docker
+From the root directory run `docker-compose up -d`
