@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: weather-frontend
     ports:
-      - "5000:5000"  # Exposes Vue app on port 5000
+      - "5000:80"
     depends_on:
       - backend
     networks:
