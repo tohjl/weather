@@ -17,58 +17,65 @@
         <p><strong>Summary:</strong> {{ forecast.summary_forecast }} ({{ forecast.summary_when }})</p>
         <p><strong>Temperature:</strong> {{ forecast.min_temp }}°C - {{ forecast.max_temp }}°C</p>
       </div>
-  </div>
+    </div>
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import axios from "axios";
+import { ref, computed, onMounted } from "vue";
 
-export default {
-  name: "WeatherForecast",
-  data() {
-    return {
-      loading: false,
-      error: null,
-      forecasts: null, // Array to hold multiple forecast data
-    };
-  },
-  methods: {
-    fetchForecasts() {
-      this.loading = true;
-      this.error = null;
-      axios
-        .get("http://localhost:8080/api/weather")
-        .then((response) => {
-          this.forecasts = response.data; // Assuming the API returns an array of forecast objects
-        })
-        .catch((err) => {
-          this.error = "Failed to fetch weather data. Please try again later.";
-          console.error(err);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-  },
-  computed: {
-    // Filter forecasts where location_name is "Selangor"
-    filteredForecasts() {
-      // Safeguard: Return an empty array if forecasts is null or undefined
-      return this.forecasts
-        ? this.forecasts.filter(
-          (forecast) => forecast.location.location_name === "Cheras"
-        )
-        : [];
-    },
-  },
-  mounted() {
-    this.fetchForecasts();
-  },
+
+// Define the structure of the forecast data
+interface Location {
+  location_name: string;
+}
+
+interface Forecast {
+  location: Location;
+  date: string;
+  morning_forecast: string;
+  afternoon_forecast: string;
+  night_forecast: string;
+  summary_forecast: string;
+  summary_when: string;
+  min_temp: number;
+  max_temp: number;
+}
+
+const loading = ref(false);
+const error = ref<string | null>(null);
+const forecasts = ref<Forecast[]>([]);
+
+const fetchForecasts = () => {
+  loading.value = true;
+  error.value = null; // Clear error before making a new request
+  axios
+    .get("http://localhost:8080/api/weather")
+    .then((response) => {
+      forecasts.value = response.data; // Assuming the API returns an array of forecast objects
+    })
+    .catch((err) => {
+      error.value = "Failed to fetch weather data. Please try again later.";
+      console.error(err);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
+
+// Use onMounted to call fetchForecasts when the component mounts
+onMounted(fetchForecasts);
+
+// Filter forecasts based on location
+const filteredForecasts = computed(() => {
+  return forecasts.value.filter(
+    (forecast) => forecast.location.location_name === "Cheras"
+  );
+});
 </script>
 
-<style>
+<style scoped>
 .weather-container {
   font-family: Arial, sans-serif;
   max-width: 1000px;
@@ -124,5 +131,4 @@ h1 {
 .forecast-item p strong {
   color: #2980b9;
 }
-
 </style>

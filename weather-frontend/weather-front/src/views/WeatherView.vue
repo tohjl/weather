@@ -3,8 +3,9 @@
     <!-- Your weather forecast template here -->
   </div>
 </template>
-
-<script>
+<script setup lang="ts">
+</script>
+<script >
 import WeatherForecast from '../components/WeatherForecast.vue'; // Import your component
 
 export default {
