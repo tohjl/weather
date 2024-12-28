@@ -1,4 +1,5 @@
 import './assets/main.css'
+import "./assets/WeatherForecast.css"; // Adjust the path to your CSS file
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
